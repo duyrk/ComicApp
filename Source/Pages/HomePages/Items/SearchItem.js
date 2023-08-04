@@ -5,8 +5,25 @@ import {AppColors} from '../../../Constants/AppColors';
 import {Typographies} from '../../../Constants/Typographies';
 import LinearGradient from 'react-native-linear-gradient';
 import DropShadow from 'react-native-drop-shadow';
-
-const DetailInfoItem = props => {
+const genreData = [
+  {
+    id: 1,
+    name: 'Action',
+  },
+  {
+    id: 2,
+    name: 'Romance',
+  },
+  {
+    id: 3,
+    name: 'Comedy',
+  },
+  {
+    id: 4,
+    name: 'School Life',
+  },
+];
+const SearchItem = props => {
   const {data} = props;
   return (
     <DropShadow
@@ -23,34 +40,37 @@ const DetailInfoItem = props => {
       <View style={styles.itemContainer}>
         <FastImage
           source={{uri: data.image}}
-          style={{width: 90, height: 120, borderRadius: 10}}
+          style={{width: 90, height: 120}}
           resizeMode={FastImage.resizeMode.contain}></FastImage>
         <View style={styles.itemContentRight}>
           <View style={styles.itemInfoTop}>
             <View style={{flex: 1}}>
               <View style={styles.mangaTitle}>
                 <Text
-                  style={[
-                    Typographies.h4,
-                    {color: AppColors.primary_black, width: 144},
-                  ]}>
+                  style={[Typographies.h4, {color: AppColors.primary_black}]}>
                   {data.name}
                 </Text>
-                <Pressable
-                  style={{
-                    borderRadius: 50,
-                    overflow: 'hidden',
-                    backgroundColor: AppColors.primary,
-                    padding: 10,
-                  }}>
-                  <FastImage
-                    source={require('../../../Images/ic_save.png')}
-                    style={{width: 22, height: 22}}></FastImage>
-                </Pressable>
               </View>
               <Text style={{color: AppColors.secondary_gray}}>
                 From MangaKakalot
               </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+            }}>
+            <Text style={[{color: AppColors.primary_black}]}>Genres:</Text>
+            <View
+              style={{flexDirection: 'row', flexWrap: 'wrap', width: '90%'}}>
+              {genreData.map(item => (
+                <Text
+                  key={item.id}
+                  style={[{color: AppColors.primary_black, marginStart: 5}]}>
+                  {item.name}
+                </Text>
+              ))}
             </View>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -62,18 +82,13 @@ const DetailInfoItem = props => {
   );
 };
 
-export default DetailInfoItem;
+export default SearchItem;
 
 const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: AppColors.primary_white,
     flexDirection: 'row',
-    paddingStart: 20,
-    paddingEnd: 22,
-    paddingVertical: 15,
-    borderRadius: 20,
-    marginHorizontal: 1,
-    marginTop: 20,
+    margin: 5,
   },
   itemContentRight: {flex: 1, justifyContent: 'space-between', marginStart: 5},
   itemInfoTop: {

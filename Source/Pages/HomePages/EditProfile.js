@@ -10,7 +10,9 @@ import DatePicker from 'react-native-date-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Dialog from 'react-native-dialog';
 import {Typographies} from '../../Constants/Typographies';
-const SetupProfile = () => {
+import AppToolbar from '../../Components/AppToolbar';
+import {useNavigation} from '@react-navigation/native';
+const EditProfile = () => {
   const [date, setDate] = useState(new Date());
   const [name, setname] = useState('');
   const [nickname, setnickname] = useState('');
@@ -81,11 +83,19 @@ const SetupProfile = () => {
       setdisabled('normal');
     }
   }, [name, nickname, email, convertedDate, bio]);
-
+  const navigation = useNavigation();
   return (
     <BottomSheetModalProvider>
       <KeyboardAwareScrollView>
         <View style={styles.container}>
+          <View style={{paddingHorizontal: 15, paddingTop: 10}}>
+            <AppToolbar
+              type="back"
+              title="My Profile"
+              onPressBack={() => {
+                navigation.goBack();
+              }}></AppToolbar>
+          </View>
           <View style={{alignItems: 'center'}}>
             <Pressable style={styles.avatarContainer} onPress={showDialog}>
               <View style={styles.avatarDefault}>
@@ -108,7 +118,7 @@ const SetupProfile = () => {
             </Pressable>
           </View>
 
-          <View style={[styles.inputContainer, {marginTop: 67}]}>
+          <View style={[styles.inputContainer, {marginTop: 25}]}>
             <AppInputField
               type="text"
               placeHolder="Enter your name"
@@ -145,7 +155,7 @@ const SetupProfile = () => {
               onChangeText={setbio}></AppInputField>
           </View>
           <View style={styles.buttonContainer}>
-            <AppButton type={disabled} value="Continue"></AppButton>
+            <AppButton type={disabled} value="Edit"></AppButton>
           </View>
           <BottomSheetModal
             ref={bottomSheetModalRef}
@@ -217,7 +227,7 @@ const SetupProfile = () => {
   );
 };
 
-export default SetupProfile;
+export default EditProfile;
 
 const styles = StyleSheet.create({
   contentContainer: {

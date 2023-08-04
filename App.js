@@ -7,6 +7,7 @@
  */
 
 import React, {useState} from 'react';
+import 'react-native-gesture-handler';
 import {
   SafeAreaView,
   ScrollView,
@@ -22,6 +23,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import UserNavigation from './Source/Pages/UserNavigation';
 import {store} from './Source/Redux/store/store';
 import persistStore from 'redux-persist/es/persistStore';
+import {HomeScreen} from './Source/Pages/HomePages/Home';
 let persistor = persistStore(store);
 const App = () => {
   return (
@@ -33,6 +35,7 @@ const App = () => {
             insets: {top: 0, left: 0, right: 0, bottom: 0},
           }}>
           <UserNavigation />
+          {/* <HomeScreen></HomeScreen> */}
           <StatusBar
             barStyle={'dark-content'}
             backgroundColor={'#FFF'}></StatusBar>

@@ -13,12 +13,17 @@ import ReadManga from './HomePages/ReadManga';
 import DetailReader from './HomePages/DetailReader';
 import Profile from './HomePages/Profile';
 import {NavigationContainer} from '@react-navigation/native';
+import Test from './Test';
+import Loading from '../Components/Loading';
+import {RefreshControl} from 'react-native-gesture-handler';
+import EditProfile from './HomePages/EditProfile';
+import TestTopTab from './TestTopTab';
 const UserStack = createStackNavigator();
 const UserNavigation = () => {
   return (
     <NavigationContainer>
       <UserStack.Navigator
-        initialRouteName={routes.login}
+        initialRouteName={routes.manga}
         detachInactiveScreens={true}
         screenOptions={{
           headerShown: false,
@@ -53,6 +58,10 @@ const UserNavigation = () => {
         <UserStack.Screen
           name={routes.user}
           component={Profile}></UserStack.Screen>
+        <UserStack.Screen
+          name={routes.editprofile}
+          component={EditProfile}></UserStack.Screen>
+        <UserStack.Screen name={'test'} component={Test}></UserStack.Screen>
       </UserStack.Navigator>
     </NavigationContainer>
   );

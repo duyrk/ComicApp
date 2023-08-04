@@ -10,4 +10,5 @@ export const routes = {
   setupprofile: 'SETUP_PROFILE',
   choosegenre: 'GENRE',
   recommend: 'RECOMMEND',
+  editprofile: 'EDITPROFILE',
 };
