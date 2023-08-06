@@ -19,6 +19,9 @@ import FavoriteButton from '../../Components/FavoriteButton';
 import Tab from '../AnimatedSlidingTab';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {TopBar} from '../../Components/TopBar';
+import ChapterItem from './Items/ChapterItem';
+import CharacterItem from './Items/CharacterItem';
+
 const data = [
   {
     _id: '1',
@@ -94,8 +97,55 @@ const characterData = [
     description:
       'Raku is a little taller than average for a high schooler and has messy, black hair. He has lightly tanned, fair skin, dark blue eyes and also has a big scar on the right side of his forehead.',
   },
+  {
+    _id: '3',
+    name: 'Raku Ichijō',
+    type: 'Main Characters',
+    image:
+      'https://i.pinimg.com/originals/1e/59/60/1e596023f320e36af6466a7c1214c3e8.jpg',
+    description:
+      'Raku is a little taller than average for a high schooler and has messy, black hair. He has lightly tanned, fair skin, dark blue eyes and also has a big scar on the right side of his forehead.',
+  },
 ];
-
+const chapterdata = [
+  {
+    _id: '1',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+  {
+    _id: '2',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+  {
+    _id: '3',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+  {
+    _id: '4',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+  {
+    _id: '5',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+  {
+    _id: '6',
+    title: '',
+    thumbnail: '',
+    date: '',
+  },
+];
+const {width, height} = Dimensions.get('screen');
 const TopNavigator = () => {
   const TopTab = createMaterialTopTabNavigator();
   return (
@@ -109,16 +159,221 @@ const TopNavigator = () => {
 };
 const MangaDetail = () => {
   return (
-    <View style={{backgroundColor: 'red'}}>
-      <Text>Manga</Text>
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          paddingHorizontal: 22,
+          backgroundColor: AppColors.primary_white,
+          paddingTop: 10,
+        }}>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: AppColors.secondary_gray,
+            width: '100%',
+            alignItems: 'center',
+            padding: 10,
+            borderRadius: 15,
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row'}}>
+              <FastImage
+                source={require('../../Images/ic_user.png')}
+                style={{width: 20, height: 20}}
+                resizeMode={FastImage.resizeMode.contain}
+                tintColor={AppColors.secondary_gray}></FastImage>
+              <Text
+                style={[
+                  Typographies.h4,
+                  {marginStart: 10, color: AppColors.secondary_gray},
+                ]}>
+                Author:
+              </Text>
+            </View>
+            <Text
+              style={[
+                Typographies.h4,
+                {
+                  marginStart: 10,
+                  color: AppColors.primary,
+                  fontWeight: '800',
+                },
+              ]}>
+              Tomohito Oda
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 17}}>
+            <View style={{flexDirection: 'row'}}>
+              <FastImage
+                source={require('../../Images/ic_status.png')}
+                style={{width: 20, height: 20}}
+                resizeMode={FastImage.resizeMode.contain}
+                tintColor={AppColors.secondary_gray}></FastImage>
+              <Text
+                style={[
+                  Typographies.h4,
+                  {marginStart: 10, color: AppColors.secondary_gray},
+                ]}>
+                Status:
+              </Text>
+            </View>
+            <Text
+              style={[
+                Typographies.h4,
+                {
+                  marginStart: 10,
+                  color: AppColors.primary,
+                  fontWeight: '800',
+                },
+              ]}>
+              On Going
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 17}}>
+            <View style={{flexDirection: 'row'}}>
+              <FastImage
+                source={require('../../Images/ic_category.png')}
+                style={{width: 20, height: 20}}
+                resizeMode={FastImage.resizeMode.contain}
+                tintColor={AppColors.secondary_gray}></FastImage>
+              <Text
+                style={[
+                  Typographies.h4,
+                  {marginStart: 10, color: AppColors.secondary_gray},
+                ]}>
+                Genres:
+              </Text>
+            </View>
+            <Text
+              style={[
+                Typographies.h4,
+                {
+                  marginStart: 10,
+                  color: AppColors.primary,
+                  fontWeight: '800',
+                },
+              ]}>
+              Tomohito Oda
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 17}}>
+            <View style={{flexDirection: 'row'}}>
+              <FastImage
+                source={require('../../Images/ic_eye2.png')}
+                style={{width: 20, height: 20}}
+                resizeMode={FastImage.resizeMode.contain}
+                tintColor={AppColors.secondary_gray}></FastImage>
+              <Text
+                style={[
+                  Typographies.h4,
+                  {marginStart: 10, color: AppColors.secondary_gray},
+                ]}>
+                Views:
+              </Text>
+            </View>
+            <Text
+              style={[
+                Typographies.h4,
+                {
+                  marginStart: 10,
+                  color: AppColors.primary,
+                  fontWeight: '800',
+                },
+              ]}>
+              34.642.436
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            borderRadius: 10,
+            overflow: 'hidden',
+          }}>
+          <Pressable
+            android_ripple={{color: AppColors.primary}}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              borderWidth: 1,
+              borderColor: AppColors.primary,
+              padding: 10,
+              borderBottomStartRadius: 10,
+              borderTopStartRadius: 10,
+            }}>
+            <Text style={[Typographies.h4, {color: AppColors.primary}]}>
+              Read First
+            </Text>
+          </Pressable>
+          <Pressable
+            android_ripple={{color: AppColors.primary}}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              borderWidth: 1,
+              borderColor: AppColors.primary,
+              padding: 10,
+              borderBottomEndRadius: 10,
+              borderTopEndRadius: 10,
+            }}>
+            <Text style={[Typographies.h4, {color: AppColors.primary}]}>
+              Read Last
+            </Text>
+          </Pressable>
+        </View>
+        <View style={{marginTop: 20}}>
+          <Text
+            style={[
+              Typographies.h3,
+              {color: AppColors.primary_black, fontWeight: '700'},
+            ]}>
+            Description
+          </Text>
+          <Text style={{lineHeight: 20, color: AppColors.secondary_gray}}>
+            Nisekoi kể về chuyện tình tay ba xoay quanh Ichijō Raku, Kirisaki
+            Chitoge và Onodera Kosaki. Raku là con trai của ông trùm băng đảng
+            yakuza tên Shuei-gumi và cậu đang thầm thích bạn học cùng lớp
+            Kosaki. Cho đến khi có một cuộc hẹn hò giả tạo với cô gái Chitoge
+            điều gì sẽ xảy ra tiếp theo...?
+          </Text>
+        </View>
+        <View style={{marginTop: 20}}>
+          <Text
+            style={[
+              Typographies.h3,
+              {color: AppColors.primary_black, fontWeight: '700'},
+            ]}>
+            Chapters
+          </Text>
+        </View>
+      </View>
+      <ScrollView
+        style={{
+          height: height * 0.5,
+          backgroundColor: AppColors.primary_white,
+        }}
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}>
+        {chapterdata.map(item => (
+          <ChapterItem key={item._id}></ChapterItem>
+        ))}
+      </ScrollView>
     </View>
   );
 };
 const Character = () => {
   return (
-    <View>
-      <Text>Character</Text>
-    </View>
+    <ScrollView
+      style={{flex: 1, backgroundColor: AppColors.primary_white}}
+      nestedScrollEnabled
+      showsVerticalScrollIndicator={false}>
+      <View>
+        {characterData.map(item => (
+          <CharacterItem data={item} key={item._id}></CharacterItem>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 const Manga = () => {
@@ -142,10 +397,10 @@ const Manga = () => {
     <ScrollView
       style={styles.container}
       stickyHeaderIndices={[0]}
-      nestedScrollEnabled={true}>
+      nestedScrollEnabled>
       <View
         style={{
-          paddingStart: 33,
+          paddingStart: 23,
           paddingEnd: 22,
           backgroundColor: AppColors.primary_white,
         }}>
@@ -186,7 +441,7 @@ const Manga = () => {
         </View>
       </View>
 
-      <View style={{flex: 1, backgroundColor: 'red'}}>
+      <View style={{height: height, marginTop: 20}}>
         <TopNavigator></TopNavigator>
       </View>
     </ScrollView>

@@ -88,7 +88,7 @@ const EditProfile = () => {
     <BottomSheetModalProvider>
       <KeyboardAwareScrollView>
         <View style={styles.container}>
-          <View style={{paddingHorizontal: 15, paddingTop: 10}}>
+          <View style={{paddingStart: 23, paddingEnd: 22, paddingTop: 10}}>
             <AppToolbar
               type="back"
               title="My Profile"

@@ -6,7 +6,6 @@ import DropShadow from 'react-native-drop-shadow';
 const {width} = Dimensions.get('screen');
 
 const TabBarIndicator = ({state, length}) => {
-  console.log('lengh' + length);
   const padding = 20 / length;
   const ITEM_WIDTH = width / length - padding;
   const [translateValue, setTranslateValue] = useState(
@@ -20,37 +19,24 @@ const TabBarIndicator = ({state, length}) => {
     const toValue = ITEM_WIDTH * index;
     Animated.timing(translateValue, {
       toValue: toValue,
-      duration: 300,
+      duration: 400,
       useNativeDriver: true,
     }).start();
   };
   return (
-    <DropShadow
+    <Animated.View
       style={{
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
-      }}>
-      <Animated.View
-        style={{
-          position: 'absolute',
-          width: ITEM_WIDTH,
-          backgroundColor: 'transparent',
-          height: '100%',
-          borderRadius: 20,
-          transform: [{translateX: translateValue}],
-          marginStart: 10,
-          borderWidth: 3,
-          borderColor: '#EBECF0',
-        }}
-      />
-    </DropShadow>
+        position: 'absolute',
+        width: ITEM_WIDTH,
+        backgroundColor: 'transparent',
+        height: '100%',
+        borderRadius: 20,
+        transform: [{translateX: translateValue}],
+        marginStart: 10,
+        borderWidth: 1,
+        borderColor: '#EBECF0',
+      }}
+    />
   );
 };
 
@@ -66,6 +52,7 @@ export function TopBar({state, descriptors, navigation, position}) {
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
         elevation: 3,
+        paddingVertical: 5,
       }}>
       <View
         style={{
@@ -119,6 +106,7 @@ export function TopBar({state, descriptors, navigation, position}) {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
+              activeOpacity={1}
               style={[
                 {
                   flex: 1,
@@ -144,10 +132,10 @@ export function TopBar({state, descriptors, navigation, position}) {
             </TouchableOpacity>
           );
         })}
+        <TabBarIndicator state={state} length={state.routes.length}>
+          {' '}
+        </TabBarIndicator>
       </View>
-      <TabBarIndicator state={state} length={state.routes.length}>
-        {' '}
-      </TabBarIndicator>
     </DropShadow>
   );
 }

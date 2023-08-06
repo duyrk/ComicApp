@@ -121,11 +121,17 @@ const Profile = () => {
               </Pressable>
             </DropShadow>
 
-            <View style={{width: '60%', marginStart: 15}}>
+            <View style={{width: '100%', marginStart: 15}}>
               <Text style={[Typographies.h3, {color: AppColors.primary_black}]}>
                 raiko
               </Text>
-              <Text style={[{marginTop: 4}, Typographies.h5]}>VKDuy</Text>
+              <Text
+                style={[
+                  {marginTop: 4, color: AppColors.secondary_gray},
+                  Typographies.h5,
+                ]}>
+                VKDuy
+              </Text>
             </View>
           </View>
         </View>
@@ -135,72 +141,11 @@ const Profile = () => {
           </Text>
         </View>
       </View>
-      <View style={styles.statsContainer}>
-        <View>
-          <Text
-            style={[
-              Typographies.h3,
-              {color: AppColors.primary_black, textAlign: 'center'},
-            ]}>
-            24
-          </Text>
-          <Text
-            style={[
-              Typographies.h6,
-              {
-                color: AppColors.secondary_gray,
-                textAlign: 'center',
-                marginTop: 5,
-              },
-            ]}>
-            Reviews
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={[
-              Typographies.h3,
-              {color: AppColors.primary_black, textAlign: 'center'},
-            ]}>
-            425
-          </Text>
-          <Text
-            style={[
-              Typographies.h6,
-              {
-                color: AppColors.secondary_gray,
-                textAlign: 'center',
-                marginTop: 5,
-              },
-            ]}>
-            Followers
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={[
-              Typographies.h3,
-              {color: AppColors.primary_black, textAlign: 'center'},
-            ]}>
-            1.5k
-          </Text>
-          <Text
-            style={[
-              Typographies.h6,
-              {
-                color: AppColors.secondary_gray,
-                textAlign: 'center',
-                marginTop: 5,
-              },
-            ]}>
-            Likes
-          </Text>
-        </View>
-      </View>
+
       {/* Reviews Section */}
       <View
         style={{
-          marginTop: 30,
+          marginTop: 10,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -211,7 +156,7 @@ const Profile = () => {
       {/* Reviews Section */}
       <View
         style={{
-          marginTop: 30,
+          marginTop: 20,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -223,7 +168,7 @@ const Profile = () => {
       </View>
       <View
         style={{
-          marginTop: 18,
+          marginTop: 5,
         }}>
         {mangaData.map(item => (
           <DetailInfoItem data={item} key={item._id}></DetailInfoItem>
@@ -241,7 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: AppColors.primary_white,
-    paddingStart: 33,
+    paddingStart: 23,
     paddingEnd: 22,
     // paddingTop: 14,
   },
@@ -254,7 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 36,
+    marginTop: 20,
   },
   infoContainer: {
     flexDirection: 'row',
@@ -265,6 +210,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 50,
     overflow: 'hidden',
+    marginStart: 4,
   },
   aboutYouContainer: {
     marginTop: 30,
