@@ -6,6 +6,12 @@ import DatePicker from 'react-native-date-picker';
 import LottieView from 'lottie-react-native';
 import {Image} from 'react-native';
 import TestTopTab from './TestTopTab';
+import {
+  Menu,
+  MenuOption,
+  MenuOptions,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 const Test = () => {
   const [date, setDate] = useState(new Date());
   // ref
@@ -42,9 +48,23 @@ const Test = () => {
           title="Dismiss Modal"
           color="black"
         />
-        <View style={{flex: 1}}>
-          <TestTopTab></TestTopTab>
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          <Menu onSelect={value => alert(`Selected number: ${value}`)}>
+            <MenuTrigger
+              text="• • •"
+              customStyles={triggerStyles}></MenuTrigger>
+            <MenuOptions customStyles={optionsStyles}>
+              <MenuOption value={1} text="One" />
+              <MenuOption value={2}>
+                <Text style={{color: 'red'}}>Two</Text>
+              </MenuOption>
+              <MenuOption value={3} disabled={true} text="Three" />
+            </MenuOptions>
+          </Menu>
         </View>
+        {/* <View style={{flex: 1}}>
+          <TestTopTab></TestTopTab>
+        </View> */}
 
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -60,6 +80,37 @@ const Test = () => {
       </View>
     </BottomSheetModalProvider>
   );
+};
+const triggerStyles = {
+  triggerText: {
+    color: 'black',
+  },
+  triggerOuterWrapper: {
+    backgroundColor: 'white',
+    width: 24,
+    alignItems: 'center',
+  },
+};
+
+const optionsStyles = {
+  optionsContainer: {
+    backgroundColor: 'white',
+    padding: 5,
+    marginTop: 20,
+  },
+  optionsWrapper: {},
+  optionWrapper: {
+    // borderBottom: '#000',
+    // borderBottomWidth: 1,
+    // paddingVertical: 5,
+  },
+  optionTouchable: {
+    underlayColor: 'gold',
+    activeOpacity: 70,
+  },
+  optionText: {
+    color: 'black',
+  },
 };
 
 const styles = StyleSheet.create({

@@ -1,4 +1,3 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from './util';
@@ -14,16 +13,13 @@ import DetailReader from './HomePages/DetailReader';
 import Profile from './HomePages/Profile';
 import {NavigationContainer} from '@react-navigation/native';
 import Test from './Test';
-import Loading from '../Components/Loading';
-import {RefreshControl} from 'react-native-gesture-handler';
 import EditProfile from './HomePages/EditProfile';
-import TestTopTab from './TestTopTab';
 const UserStack = createStackNavigator();
 const UserNavigation = () => {
   return (
     <NavigationContainer>
       <UserStack.Navigator
-        initialRouteName={routes.user}
+        initialRouteName={routes.read}
         detachInactiveScreens={true}
         screenOptions={{
           headerShown: false,

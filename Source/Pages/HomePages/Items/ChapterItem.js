@@ -13,10 +13,6 @@ const ChapterItem = props => {
       onPress={() => {
         console.log('alo');
       }}>
-      <FastImage
-        source={require('../../../Images/thumbnailSample.png')}
-        style={{width: 150, height: 80}}
-        resizeMode={FastImage.resizeMode.cover}></FastImage>
       <View
         style={{
           marginStart: 5,
@@ -24,14 +20,16 @@ const ChapterItem = props => {
           flex: 1,
         }}>
         <View>
-          <Text style={[Typographies.h5, {color: AppColors.primary_black}]}>
+          <Text style={[Typographies.h4, {color: AppColors.primary_black}]}>
             Cuộc gặp gỡ định mệnh
           </Text>
           <Text style={{marginTop: 3, color: AppColors.secondary_gray}}>
             Chapter 1
           </Text>
         </View>
-        <Text style={{color: AppColors.secondary_gray}}>14/09/2021</Text>
+        <Text style={{marginTop: 5, color: AppColors.secondary_gray}}>
+          14/09/2021
+        </Text>
       </View>
     </Pressable>
   );
@@ -46,5 +44,6 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.primary_white,
     borderBottomWidth: 1,
     borderBottomColor: '#EBECF0',
+    paddingHorizontal: 22,
   },
 });

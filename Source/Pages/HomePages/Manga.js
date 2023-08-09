@@ -12,11 +12,7 @@ import {AppColors} from '../../Constants/AppColors';
 import DropShadow from 'react-native-drop-shadow';
 import FastImage from 'react-native-fast-image';
 import {Typographies} from '../../Constants/Typographies';
-import DefaultItem from './Items/DefaultItem';
-import DetailInfoItem from './Items/DetailInfoItem';
-import AppButton from '../../Components/AppButton';
 import FavoriteButton from '../../Components/FavoriteButton';
-import Tab from '../AnimatedSlidingTab';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {TopBar} from '../../Components/TopBar';
 import ChapterItem from './Items/ChapterItem';
@@ -368,7 +364,7 @@ const Character = () => {
       style={{flex: 1, backgroundColor: AppColors.primary_white}}
       nestedScrollEnabled
       showsVerticalScrollIndicator={false}>
-      <View>
+      <View style={{marginTop: 10}}>
         {characterData.map(item => (
           <CharacterItem data={item} key={item._id}></CharacterItem>
         ))}

@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import {Typographies} from '../../Constants/Typographies';
 import DefaultItem from './Items/DefaultItem';
 import DetailInfoItem from './Items/DetailInfoItem';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, StackActions} from '@react-navigation/native';
 import {routes} from '../util';
 const mangaData = [
   {
@@ -82,6 +82,13 @@ const mangaData = [
 const Profile = () => {
   const navigation = useNavigation();
   const {navigate} = useNavigation();
+  const {dispatch} = useNavigation();
+  const handleOption1 = () => {
+    dispatch(StackActions.replace(routes.home));
+  };
+  const handleOption2 = () => {
+    dispatch(StackActions.replace(routes.library));
+  };
   return (
     <ScrollView
       style={styles.container}
@@ -92,7 +99,9 @@ const Profile = () => {
         title="My Profile"
         onPressBack={() => {
           navigation.goBack();
-        }}></AppToolbar>
+        }}
+        option1={handleOption1}
+        option2={handleOption2}></AppToolbar>
 
       <View style={styles.profileContainer}>
         <View style={styles.header}>
