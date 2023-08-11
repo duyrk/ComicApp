@@ -11,9 +11,12 @@ import React, {useRef, useState, useCallback, useMemo} from 'react';
 import {AppColors} from '../../Constants/AppColors';
 import AppToolbar from '../../Components/AppToolbar';
 import FastImage from 'react-native-fast-image';
-import ScaledImage from '../../Components/ScaledImage';
 import {Typographies} from '../../Constants/Typographies';
-import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 import {routes} from '../util';
 import {useNavigation, StackActions} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
@@ -95,7 +98,6 @@ const ReadManga = () => {
   };
 
   const scrollY = new Animated.Value(0);
-  const [isSheeted, setisSheeted] = useState(false);
   // ref
   const bottomSheetModalRef = useRef(null);
   // variables
@@ -103,14 +105,11 @@ const ReadManga = () => {
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-    setisSheeted(true);
   }, []);
   const handleDismissModalPress = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
-  const onDismiss = () => {
-    setisSheeted(false);
-  };
+  const onDismiss = () => {};
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -118,7 +117,7 @@ const ReadManga = () => {
   return (
     <BottomSheetModalProvider>
       <ScrollView
-        style={[styles.container, isSheeted ? {opacity: 0.3} : {opacity: 1}]}
+        style={[styles.container]}
         stickyHeaderIndices={[0]}
         nestedScrollEnabled={true}>
         <View
@@ -190,6 +189,9 @@ const ReadManga = () => {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={1}
+          backdropComponent={backdropProps => (
+            <BottomSheetBackdrop {...backdropProps} />
+          )}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           enableDismissOnClose

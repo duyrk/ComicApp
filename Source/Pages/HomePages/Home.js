@@ -12,14 +12,16 @@ import {AppColors} from '../../Constants/AppColors';
 import FastImage from 'react-native-fast-image';
 import {Typographies} from '../../Constants/Typographies';
 import DropShadow from 'react-native-drop-shadow';
-import App from '../../../App';
 import Slider from '../../Components/Slider';
 import DefaultItem from './Items/DefaultItem';
-import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from '@gorhom/bottom-sheet';
 import {routes} from '../util';
 import {useNavigation} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
-import DetailInfoItem from './Items/DetailInfoItem';
 import RecentItem from './Items/RecentItem';
 import SearchItem from './Items/SearchItem';
 
@@ -325,6 +327,9 @@ const Home = () => {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={1}
+          backdropComponent={backdropProps => (
+            <BottomSheetBackdrop {...backdropProps} />
+          )}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           enableDismissOnClose

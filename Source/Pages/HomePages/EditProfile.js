@@ -5,7 +5,11 @@ import FastImage from 'react-native-fast-image';
 import AppInputField from '../../Components/AppInputField';
 import AppButton from '../../Components/AppButton';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from '@gorhom/bottom-sheet';
 import DatePicker from 'react-native-date-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Dialog from 'react-native-dialog';
@@ -160,6 +164,9 @@ const EditProfile = () => {
           <BottomSheetModal
             ref={bottomSheetModalRef}
             index={1}
+            backdropComponent={backdropProps => (
+              <BottomSheetBackdrop {...backdropProps} />
+            )}
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             enableDismissOnClose

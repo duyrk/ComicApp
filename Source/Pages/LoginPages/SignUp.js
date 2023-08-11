@@ -1,5 +1,12 @@
-import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {Typographies} from '../../Constants/Typographies';
 import {AppColors} from '../../Constants/AppColors';
 import FastImage from 'react-native-fast-image';
@@ -8,14 +15,54 @@ import LinearGradient from 'react-native-linear-gradient';
 import AppButton from '../../Components/AppButton';
 import AppInputField from '../../Components/AppInputField';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useSafeAreaFrame} from 'react-native-safe-area-context';
-import {useScrollToTop} from '@react-navigation/native';
+import {routes} from '../util';
+import AxiosIntance from '../../util/AxiosInstance';
+import {useNavigation} from '@react-navigation/native';
 const SignUp = () => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
   const [confirm, setconfirm] = useState('');
+  const [email, setemail] = useState('');
+  const [isDisabled, setisDisabled] = useState(true);
+  const {navigate} = useNavigation();
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  const register = async () => {
+    try {
+      const response = await AxiosIntance().post('/user/register', {
+        user_name: username,
+        password: password,
+        email: email,
+      });
+      ToastAndroid.show('Đăng ký thành công!', ToastAndroid.SHORT);
+      navigate(routes.setupprofile, {id: response.data._id});
+    } catch (error) {
+      console.log('Call register api error:' + error);
+      ToastAndroid.show('Tài khoản đã tồn tại!', ToastAndroid.SHORT);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      username.length == 0 ||
+      password.length == 0 ||
+      confirm.length == 0 ||
+      email.length == 0
+    ) {
+      setisDisabled(true);
+    } else {
+      if (password != confirm) {
+        setisDisabled(true);
+      } else if (!email.match(validRegex)) {
+        setisDisabled(true);
+      } else {
+        setisDisabled(false);
+      }
+    }
+  }, [username, confirm, password, email]);
   return (
     <View style={[styles.container]}>
       <View style={styles.socialContainer}>
@@ -31,7 +78,7 @@ const SignUp = () => {
             Sign in to start
           </Text>
         </View>
-        <View style={{paddingHorizontal: 45, marginTop: 60}}>
+        <View style={{paddingHorizontal: 45, marginTop: 10}}>
           <DropShadow
             style={{
               shadowColor: '#000',
@@ -54,7 +101,7 @@ const SignUp = () => {
             </Pressable>
           </DropShadow>
         </View>
-        <View style={{paddingHorizontal: 45, marginTop: 40}}>
+        <View style={{paddingHorizontal: 45, marginTop: 20}}>
           <DropShadow
             style={{
               shadowColor: '#000',
@@ -102,9 +149,9 @@ const SignUp = () => {
       </View>
       <View style={[styles.defautLogin]}>
         <LinearGradient
-          start={{x: 2, y: 3}}
-          end={{x: -1.5, y: -2}}
-          colors={['#A2B2FC', '#FFF1BE']}
+          start={{x: 0, y: -1}}
+          end={{x: 0, y: 3.5}}
+          colors={['#abbaff', '#FFF1BE']}
           style={{flex: 1, justifyContent: 'space-between'}}>
           <View>
             <View style={{paddingHorizontal: 45, marginTop: 40}}>
@@ -113,6 +160,13 @@ const SignUp = () => {
                 inputColor={AppColors.primary_white}
                 placeHolder="Username"
                 onChangeText={setusername}></AppInputField>
+            </View>
+            <View style={{paddingHorizontal: 45, marginTop: 40}}>
+              <AppInputField
+                type="text"
+                inputColor={AppColors.primary_white}
+                placeHolder="Email Address"
+                onChangeText={setemail}></AppInputField>
             </View>
             <View style={{paddingHorizontal: 45, marginTop: 30}}>
               <AppInputField
@@ -130,7 +184,10 @@ const SignUp = () => {
             </View>
           </View>
           <View style={{paddingHorizontal: 25, paddingBottom: 30}}>
-            <AppButton type="disabled" value="Continue"></AppButton>
+            <AppButton
+              type={isDisabled ? 'disabled' : 'active'}
+              value="Continue"
+              onPress={register}></AppButton>
           </View>
         </LinearGradient>
       </View>
@@ -149,7 +206,7 @@ const styles = StyleSheet.create({
     flex: 2.3,
   },
   welcomeContainter: {
-    marginTop: 56,
+    marginTop: 10,
     alignItems: 'center',
   },
   socialLoginButton: {
@@ -169,6 +226,6 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     overflow: 'hidden',
-    flex: 2.2,
+    flex: 4,
   },
 });

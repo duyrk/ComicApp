@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Typographies} from '../Constants/Typographies';
 import FastImage from 'react-native-fast-image';
 import {AppColors} from '../Constants/AppColors';
@@ -8,13 +8,15 @@ const AppInputField = props => {
   const {
     type,
     inputColor,
+    placeholderColor,
     value,
+    editable,
     placeHolder,
     onChangeText = text => {},
     onDateClick = () => {},
   } = props;
   const [inputType, setinputType] = useState('');
-  const [inputState, setinputState] = useState(value);
+  const [inputState, setinputState] = useState('');
   const [isPassword, setisPassword] = useState(true);
   switch (type) {
     case Type[0]: {
@@ -49,19 +51,24 @@ const AppInputField = props => {
     let temp = isPassword;
     setisPassword(!temp);
   };
+  useEffect(() => {
+    setinputState(value);
+  }, [value]);
+
   return (
     <View>
       {inputType === Type[0] && (
         <TextInput
           placeholder={placeHolder}
-          placeholderTextColor={AppColors.secondary_gray}
+          placeholderTextColor={placeholderColor ?? AppColors.primary_white}
           style={[
             styles.inputField,
             Typographies.h4,
             {borderBottomColor: inputColor, color: inputColor},
           ]}
           onChangeText={handleOnChangeText}
-          value={inputState}></TextInput>
+          value={inputState}
+          editable={editable ?? true}></TextInput>
       )}
       {inputType === Type[1] && (
         <View
@@ -78,14 +85,15 @@ const AppInputField = props => {
           <TextInput
             secureTextEntry={isPassword}
             placeholder={placeHolder}
-            placeholderTextColor={AppColors.secondary_gray}
+            placeholderTextColor={AppColors.primary_white}
             style={[
               styles.inputFieldPass,
               Typographies.h4,
               {color: inputColor},
             ]}
             onChangeText={handleOnChangeText}
-            value={inputState}></TextInput>
+            value={inputState}
+            editable={editable ?? true}></TextInput>
           <Pressable onPress={handlePassword}>
             <FastImage
               source={
@@ -113,7 +121,7 @@ const AppInputField = props => {
           ]}>
           <TextInput
             placeholder={placeHolder}
-            placeholderTextColor={AppColors.secondary_gray}
+            placeholderTextColor={AppColors.primary_white}
             style={[
               styles.inputFieldPass,
               Typographies.h4,

@@ -6,26 +6,20 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import 'react-native-gesture-handler';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import UserNavigation from './Source/Pages/UserNavigation';
 import {store} from './Source/Redux/store/store';
 import persistStore from 'redux-persist/es/persistStore';
-import {HomeScreen} from './Source/Pages/HomePages/Home';
 import {MenuProvider} from 'react-native-popup-menu';
+import {initializeApp} from 'firebase/app';
+import firebaseConfig from './firebaseConfig';
 let persistor = persistStore(store);
+initializeApp(firebaseConfig);
 const App = () => {
   return (
     <Provider store={store}>
