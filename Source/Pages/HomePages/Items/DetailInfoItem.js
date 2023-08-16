@@ -22,7 +22,7 @@ const DetailInfoItem = props => {
       }}>
       <View style={styles.itemContainer}>
         <FastImage
-          source={{uri: data.image}}
+          source={{uri: data.cover}}
           style={{width: 90, height: 120, borderRadius: 10}}
           resizeMode={FastImage.resizeMode.contain}></FastImage>
         <View style={styles.itemContentRight}>
@@ -36,25 +36,17 @@ const DetailInfoItem = props => {
                   ]}>
                   {data.name}
                 </Text>
-                <Pressable
-                  style={{
-                    borderRadius: 50,
-                    overflow: 'hidden',
-                    backgroundColor: AppColors.primary,
-                    padding: 10,
-                  }}>
-                  <FastImage
-                    source={require('../../../Images/ic_save.png')}
-                    style={{width: 22, height: 22}}></FastImage>
-                </Pressable>
               </View>
               <Text style={{color: AppColors.secondary_gray}}>
-                From MangaKakalot
+                Author: {data.author}
+              </Text>
+              <Text style={{color: AppColors.secondary_gray}}>
+                Language: {data.language}
+              </Text>
+              <Text style={{color: AppColors.secondary_gray}}>
+                Status: {data.status}
               </Text>
             </View>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={[{color: AppColors.primary_black}]}>Chapter 269</Text>
           </View>
         </View>
       </View>
@@ -72,8 +64,8 @@ const styles = StyleSheet.create({
     paddingEnd: 22,
     paddingVertical: 15,
     borderRadius: 20,
-    marginHorizontal: 1,
-    marginTop: 20,
+    margin: 5,
+    marginTop: 10,
   },
   itemContentRight: {flex: 1, justifyContent: 'space-between', marginStart: 5},
   itemInfoTop: {

@@ -11,8 +11,16 @@ import {
 } from 'react-native-popup-menu';
 const Type = ['back', 'tools'];
 const AppToolbar = props => {
-  const {onPressBack, onPressOption, title, type, option1, option2, option3} =
-    props;
+  const {
+    onPressBack,
+    onPressOption,
+    title,
+    type,
+    option1,
+    option2,
+    option3,
+    option4,
+  } = props;
   const [toolBarType, settoolBarType] = useState('');
   switch (type) {
     case Type[0]: {
@@ -41,7 +49,7 @@ const AppToolbar = props => {
           style={{width: 20, height: 20}}
           resizeMode={FastImage.resizeMode.contain}></FastImage>
       </Pressable>
-      <Text style={[Typographies.h4, {color: AppColors.primary_black}]}>
+      <Text style={[Typographies.h5, {color: AppColors.primary_black}]}>
         {title}
       </Text>
       {toolBarType === Type[0] && <Pressable disabled></Pressable>}
@@ -62,6 +70,9 @@ const AppToolbar = props => {
                 option2();
                 break;
               case 3:
+                option3();
+                break;
+              case 4:
                 option3();
                 break;
               default:
@@ -86,6 +97,11 @@ const AppToolbar = props => {
                   style={[Typographies.h5, {color: AppColors.primary_black}]}>
                   Chapter List
                 </Text>
+              </MenuOption>
+            )}
+            {option4 != null && (
+              <MenuOption value={4}>
+                <Text style={[Typographies.h5, {color: 'red'}]}>Logout</Text>
               </MenuOption>
             )}
           </MenuOptions>

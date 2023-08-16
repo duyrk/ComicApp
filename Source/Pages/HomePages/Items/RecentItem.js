@@ -22,7 +22,7 @@ const RecentItem = props => {
       }}>
       <View style={styles.itemContainer}>
         <FastImage
-          source={{uri: data.image}}
+          source={{uri: data.cover}}
           style={{width: 90, height: 120, borderRadius: 10}}
           resizeMode={FastImage.resizeMode.contain}></FastImage>
         <View style={styles.itemContentRight}>
@@ -31,7 +31,7 @@ const RecentItem = props => {
               <View style={styles.mangaTitle}>
                 <Text
                   style={[
-                    Typographies.h4,
+                    Typographies.h5,
                     {color: AppColors.primary_black, width: 144},
                   ]}>
                   {data.name}

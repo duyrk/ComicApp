@@ -5,6 +5,8 @@ import {AppColors} from '../../../Constants/AppColors';
 import {Typographies} from '../../../Constants/Typographies';
 import LinearGradient from 'react-native-linear-gradient';
 import DropShadow from 'react-native-drop-shadow';
+import {useNavigation} from '@react-navigation/native';
+import {routes} from '../../util';
 const genreData = [
   {
     id: 1,
@@ -25,6 +27,7 @@ const genreData = [
 ];
 const SearchItem = props => {
   const {data} = props;
+  const {navigate} = useNavigation();
   return (
     <DropShadow
       style={{
@@ -37,9 +40,13 @@ const SearchItem = props => {
         shadowRadius: 2.22,
         elevation: 3,
       }}>
-      <View style={styles.itemContainer}>
+      <Pressable
+        style={styles.itemContainer}
+        onPress={() => {
+          navigate(routes.manga, {id: data._id});
+        }}>
         <FastImage
-          source={{uri: data.image}}
+          source={{uri: data.cover}}
           style={{width: 90, height: 120}}
           resizeMode={FastImage.resizeMode.contain}></FastImage>
         <View style={styles.itemContentRight}>
@@ -52,7 +59,7 @@ const SearchItem = props => {
                 </Text>
               </View>
               <Text style={{color: AppColors.secondary_gray}}>
-                From MangaKakalot
+                Language: {data.language}
               </Text>
             </View>
           </View>
@@ -64,20 +71,17 @@ const SearchItem = props => {
             <Text style={[{color: AppColors.primary_black}]}>Genres:</Text>
             <View
               style={{flexDirection: 'row', flexWrap: 'wrap', width: '90%'}}>
-              {genreData.map(item => (
+              {data.genre.map(item => (
                 <Text
-                  key={item.id}
+                  key={item._id}
                   style={[{color: AppColors.primary_black, marginStart: 5}]}>
                   {item.name}
                 </Text>
               ))}
             </View>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={[{color: AppColors.primary_black}]}>Chapter 269</Text>
-          </View>
         </View>
-      </View>
+      </Pressable>
     </DropShadow>
   );
 };

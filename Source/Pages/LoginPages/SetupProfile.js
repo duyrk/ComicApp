@@ -50,7 +50,7 @@ const SetupProfile = ({route}) => {
   }, []);
   const handleOnDismiss = () => {
     const epochTime = new Date(date);
-    setconvertedDate(epochTime / 1000);
+    setconvertedDate(epochTime.getTime() / 1000);
     const d = epochTime.getDate();
     const m = epochTime.getMonth() + 1;
     const y = epochTime.getFullYear();
@@ -123,7 +123,9 @@ const SetupProfile = ({route}) => {
           avatar: url,
         },
       });
-      navigate(routes.login);
+      if (response) {
+        navigate(routes.login);
+      }
     } catch (error) {
       console.log('Set up profile error:' + error);
     }

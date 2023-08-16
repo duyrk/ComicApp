@@ -6,7 +6,7 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AppToolbar from '../../Components/AppToolbar';
 import {AppColors} from '../../Constants/AppColors';
 import DropShadow from 'react-native-drop-shadow';
@@ -17,6 +17,12 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {TopBar} from '../../Components/TopBar';
 import ChapterItem from './Items/ChapterItem';
 import CharacterItem from './Items/CharacterItem';
+import AxiosIntance from '../../util/AxiosInstance';
+import Loading from '../../Components/Loading';
+import {useDispatch} from 'react-redux';
+import {setCurrentManga} from '../../Redux/slices/mangaSlice';
+import {useNavigation} from '@react-navigation/native';
+import {routes} from '../util';
 
 const data = [
   {
@@ -142,20 +148,30 @@ const chapterdata = [
   },
 ];
 const {width, height} = Dimensions.get('screen');
-const TopNavigator = () => {
+const TopNavigator = props => {
+  const {data} = props;
   const TopTab = createMaterialTopTabNavigator();
   return (
     <TopTab.Navigator
       initialRouteName="Manga"
       tabBar={props => <TopBar {...props} />}>
-      <TopTab.Screen name="Manga" component={MangaDetail} />
-      <TopTab.Screen name="Character" component={Character} />
+      <TopTab.Screen name="Manga">
+        {props => <MangaDetail {...props} data={data} />}
+      </TopTab.Screen>
+      <TopTab.Screen name="Character">
+        {props => <Character {...props} data={data.character} />}
+      </TopTab.Screen>
     </TopTab.Navigator>
   );
 };
-const MangaDetail = () => {
+const MangaDetail = props => {
+  const {data} = props;
+  const {navigate} = useNavigation();
   return (
-    <View style={{flex: 1}}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: AppColors.primary_white}}
+      nestedScrollEnabled
+      showsVerticalScrollIndicator={false}>
       <View
         style={{
           paddingHorizontal: 22,
@@ -174,7 +190,7 @@ const MangaDetail = () => {
           <View style={{flexDirection: 'row'}}>
             <View style={{flexDirection: 'row'}}>
               <FastImage
-                source={require('../../Images/ic_user.png')}
+                source={{uri: data.avatar}}
                 style={{width: 20, height: 20}}
                 resizeMode={FastImage.resizeMode.contain}
                 tintColor={AppColors.secondary_gray}></FastImage>
@@ -195,7 +211,7 @@ const MangaDetail = () => {
                   fontWeight: '800',
                 },
               ]}>
-              Tomohito Oda
+              {data.author}
             </Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 17}}>
@@ -222,10 +238,15 @@ const MangaDetail = () => {
                   fontWeight: '800',
                 },
               ]}>
-              On Going
+              {data.status}
             </Text>
           </View>
-          <View style={{flexDirection: 'row', marginTop: 17}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 17,
+              alignSelf: 'flex-start',
+            }}>
             <View style={{flexDirection: 'row'}}>
               <FastImage
                 source={require('../../Images/ic_category.png')}
@@ -240,17 +261,27 @@ const MangaDetail = () => {
                 Genres:
               </Text>
             </View>
-            <Text
-              style={[
-                Typographies.h4,
-                {
-                  marginStart: 10,
-                  color: AppColors.primary,
-                  fontWeight: '800',
-                },
-              ]}>
-              Tomohito Oda
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                width: '70%',
+              }}>
+              {data.genre.map(item => (
+                <Text
+                  key={item._id}
+                  style={[
+                    Typographies.h4,
+                    {
+                      marginStart: 10,
+                      color: AppColors.primary,
+                      fontWeight: '800',
+                    },
+                  ]}>
+                  {item.name}
+                </Text>
+              ))}
+            </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 17}}>
             <View style={{flexDirection: 'row'}}>
@@ -276,7 +307,7 @@ const MangaDetail = () => {
                   fontWeight: '800',
                 },
               ]}>
-              34.642.436
+              {data.views}
             </Text>
           </View>
         </View>
@@ -297,6 +328,11 @@ const MangaDetail = () => {
               padding: 10,
               borderBottomStartRadius: 10,
               borderTopStartRadius: 10,
+            }}
+            onPress={() => {
+              navigate(routes.read, {
+                id: data.chapter[0]._id,
+              });
             }}>
             <Text style={[Typographies.h4, {color: AppColors.primary}]}>
               Read First
@@ -312,6 +348,11 @@ const MangaDetail = () => {
               padding: 10,
               borderBottomEndRadius: 10,
               borderTopEndRadius: 10,
+            }}
+            onPress={() => {
+              navigate(routes.read, {
+                id: data.chapter[data.chapter.length - 1]._id,
+              });
             }}>
             <Text style={[Typographies.h4, {color: AppColors.primary}]}>
               Read Last
@@ -327,11 +368,7 @@ const MangaDetail = () => {
             Description
           </Text>
           <Text style={{lineHeight: 20, color: AppColors.secondary_gray}}>
-            Nisekoi kể về chuyện tình tay ba xoay quanh Ichijō Raku, Kirisaki
-            Chitoge và Onodera Kosaki. Raku là con trai của ông trùm băng đảng
-            yakuza tên Shuei-gumi và cậu đang thầm thích bạn học cùng lớp
-            Kosaki. Cho đến khi có một cuộc hẹn hò giả tạo với cô gái Chitoge
-            điều gì sẽ xảy ra tiếp theo...?
+            {data.description}
           </Text>
         </View>
         <View style={{marginTop: 20}}>
@@ -344,103 +381,126 @@ const MangaDetail = () => {
           </Text>
         </View>
       </View>
-      <ScrollView
-        style={{
-          height: height * 0.5,
-          backgroundColor: AppColors.primary_white,
-        }}
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}>
-        {chapterdata.map(item => (
-          <ChapterItem key={item._id}></ChapterItem>
-        ))}
-      </ScrollView>
-    </View>
+      <View style={{height: 500}}>
+        <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+          {data.chapter.map(item => (
+            <ChapterItem key={item._id} data={item}></ChapterItem>
+          ))}
+        </ScrollView>
+      </View>
+    </ScrollView>
   );
 };
-const Character = () => {
+const Character = props => {
+  const {data} = props;
   return (
     <ScrollView
       style={{flex: 1, backgroundColor: AppColors.primary_white}}
       nestedScrollEnabled
       showsVerticalScrollIndicator={false}>
       <View style={{marginTop: 10}}>
-        {characterData.map(item => (
+        {data.map(item => (
           <CharacterItem data={item} key={item._id}></CharacterItem>
         ))}
       </View>
     </ScrollView>
   );
 };
-const Manga = () => {
+const Manga = props => {
   const {width} = Dimensions.get('window').width;
   const [isActive, setisActive] = useState(false);
-  const addToFavor = () => {
-    //request to api
-    // and set isActive to true
-    //useEffect to affect the site at first place
-  };
-  const handleFavorite = () => {
-    if (isActive == true) {
-      //request api delete this manga from collection with this user, (use id)
-    } else {
-      //when it's not active which means it need to be added to the favorite collection
-      //pass user id and mangaid
-      addToFavor();
+  const [isLoading, setisLoading] = useState(true);
+  const {route} = props;
+  const {id} = route.params;
+  const [data, setdata] = useState(null);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const GetMangaById = async () => {
+    try {
+      console.log('hey');
+      const response = await AxiosIntance().get(`/manga/get/${id}`);
+      if (response) {
+        setdata(response.data);
+        dispatch(setCurrentManga(response.data));
+        setisLoading(false);
+      }
+    } catch (error) {
+      console.log('Get manga by id error!' + error);
     }
   };
+  useEffect(() => {
+    console.log('hey1');
+    setisLoading(true);
+    GetMangaById();
+  }, []);
+
   return (
-    <ScrollView
-      style={styles.container}
-      stickyHeaderIndices={[0]}
-      nestedScrollEnabled>
-      <View
-        style={{
-          paddingStart: 23,
-          paddingEnd: 22,
-          backgroundColor: AppColors.primary_white,
-        }}>
-        <AppToolbar type="tools" title="Manga"></AppToolbar>
-      </View>
+    <View style={{flex: 1}}>
+      {isLoading && data == null ? (
+        <Loading></Loading>
+      ) : (
+        <ScrollView
+          style={styles.container}
+          stickyHeaderIndices={[0]}
+          nestedScrollEnabled>
+          <View
+            style={{
+              paddingStart: 23,
+              paddingEnd: 22,
+              backgroundColor: AppColors.primary_white,
+            }}>
+            <AppToolbar
+              type="tools"
+              title="Manga"
+              onPressBack={() => {
+                navigation.goBack();
+              }}></AppToolbar>
+          </View>
 
-      <View style={styles.mangaInfo}>
-        <DropShadow
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
+          <View style={styles.mangaInfo}>
+            <DropShadow
+              style={{
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
 
-            elevation: 5,
-          }}>
-          <FastImage
-            source={{
-              uri: 'https://genk.mediacdn.vn/thumb_w/600/DlBlzccccccccccccE5CT3hqq3xN9o/Image/2013/12/ava-15c70.jpg',
-            }}
-            style={{width: width, height: 200, borderRadius: 15}}></FastImage>
-        </DropShadow>
+                elevation: 5,
+              }}>
+              <FastImage
+                source={{
+                  uri: data.banner,
+                }}
+                style={{
+                  width: width,
+                  height: 200,
+                  borderRadius: 15,
+                }}></FastImage>
+            </DropShadow>
 
-        <View style={styles.infoContainer}>
-          <Text
-            style={[
-              Typographies.h2,
-              {width: '80%', color: AppColors.primary_black},
-            ]}>
-            Nise Koi
-          </Text>
-          <Pressable style={{width: 40, height: 40}}>
-            <FavoriteButton isActive={isActive}></FavoriteButton>
-          </Pressable>
-        </View>
-      </View>
+            <View style={styles.infoContainer}>
+              <Text
+                style={[
+                  Typographies.h2,
+                  {width: '80%', color: AppColors.primary_black},
+                ]}>
+                {data.name}
+              </Text>
+              <Pressable style={{width: 40, height: 40}}>
+                <FavoriteButton isActive={isActive}></FavoriteButton>
+              </Pressable>
+            </View>
+          </View>
 
-      <View style={{height: height, marginTop: 20}}>
-        <TopNavigator></TopNavigator>
-      </View>
-    </ScrollView>
+          <View style={{height: height, marginTop: 20}}>
+            <TopNavigator data={data}></TopNavigator>
+          </View>
+        </ScrollView>
+      )}
+    </View>
   );
 };
 

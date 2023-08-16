@@ -14,12 +14,16 @@ import Profile from './HomePages/Profile';
 import {NavigationContainer} from '@react-navigation/native';
 import Test from './Test';
 import EditProfile from './HomePages/EditProfile';
+import {useSelector} from 'react-redux';
 const UserStack = createStackNavigator();
 const UserNavigation = () => {
+  const user = useSelector(
+    state => state.persistedReducer.auth.login.currentUser,
+  );
   return (
     <NavigationContainer>
       <UserStack.Navigator
-        initialRouteName={routes.login}
+        initialRouteName={user ? routes.home : routes.login}
         detachInactiveScreens={true}
         screenOptions={{
           headerShown: false,

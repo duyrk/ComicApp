@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
+  TextInput,
 } from 'react-native';
 import React, {useEffect, useState, useMemo, useCallback, useRef} from 'react';
 import {AppColors} from '../../Constants/AppColors';
@@ -18,6 +19,9 @@ import useForceUpdate from 'use-force-update';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {routes} from '../util';
 import {useNavigation} from '@react-navigation/native';
+import AxiosIntance from '../../util/AxiosInstance';
+import SearchItem from './Items/SearchItem';
+
 const data1 = [
   {
     _id: '1',
@@ -90,11 +94,14 @@ const genres = [
 ];
 
 const Libraryv1 = () => {
-  const [data, setdata] = useState(genres);
+  const [data, setdata] = useState([]);
   const forceUpdate = useForceUpdate();
   const [genre, setgenre] = useState('');
   const [refreshing, setRefreshing] = React.useState(false);
   const [isSheeted, setisSheeted] = useState(false);
+  const [mangaData, setmangaData] = useState([]);
+  const [search, setSearch] = useState('');
+  const [handleScroll, sethandleScroll] = useState(true);
   const {navigate} = useNavigation();
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -122,13 +129,72 @@ const Libraryv1 = () => {
     console.log('handleSheetChanges', index);
   }, []);
 
+  const GetAllGenres = async () => {
+    try {
+      const response = await AxiosIntance().get(`/manga/genre/getAll`);
+      if (response) {
+        let convertedGenreArray = [
+          {
+            id: '1',
+            name: 'All',
+            filled: true,
+          },
+        ];
+        response.data.forEach(genre => {
+          convertedGenreArray.push({
+            id: genre._id,
+            name: genre.name,
+            filled: false,
+          });
+        });
+        setdata(convertedGenreArray);
+      }
+    } catch (error) {
+      console.log('Get All Genre Api error:' + error);
+    }
+  };
+  const GetMangaByGenre = async genre => {
+    try {
+      const response = await AxiosIntance().get(`/manga/genre?name=${genre}`);
+      if (response) {
+        setmangaData(response.data);
+      }
+    } catch (error) {
+      console.log('Get Manga By Genre Api error:' + error);
+    }
+  };
+  let timeOut = null;
+  const countDownSearch = searchText => {
+    if (timeOut) {
+      console.log('cleared');
+      clearTimeout(timeOut);
+    }
+    timeOut = setTimeout(() => {
+      SearchManga(searchText);
+    }, 2000);
+  };
+  const SearchManga = async keyword => {
+    try {
+      const response = await AxiosIntance().get(
+        `/manga/title?keyword=${keyword}`,
+      );
+      if (response) {
+        setmangaData(response.data);
+      }
+    } catch (error) {
+      console.log('Search Manga Api error' + error);
+    }
+  };
   useEffect(() => {
     console.log(genre);
-    //call api here
+    GetMangaByGenre(genre == 'All' ? '' : genre);
   }, [genre]);
+  useEffect(() => {
+    GetAllGenres();
+  }, []);
 
   const handleFilled = number => {
-    genres.forEach(element => {
+    data.forEach(element => {
       if (element.id == number) {
         element.filled = true;
         setgenre(element.name);
@@ -137,68 +203,69 @@ const Libraryv1 = () => {
       }
     });
 
-    setdata(genres);
+    setdata(data);
     forceUpdate();
   };
-
+  useEffect(() => {
+    if (search.length > 0) {
+      sethandleScroll(false);
+    } else {
+      sethandleScroll(true);
+    }
+  }, [search]);
   return (
     <BottomSheetModalProvider>
-      <ScrollView
-        style={[styles.container, isSheeted ? {opacity: 0.3} : {opacity: 1}]}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}></RefreshControl>
-        }
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}>
-        {/* Header Start */}
+      <View style={styles.container}>
+        {/* Search Bar Start */}
 
-        <Pressable
-          style={styles.header}
-          onPress={() => {
-            navigate(routes.user);
+        <DropShadow
+          style={{
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+            elevation: 3,
           }}>
-          <View style={styles.infoContainer}>
-            <DropShadow
-              style={{
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.5,
-                shadowRadius: 2,
-                elevation: 3,
-              }}>
+          <View style={styles.searchBarContainer}>
+            <View style={styles.seachBarLeft}>
+              <FastImage
+                source={require('../../Images/ic_search.png')}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                resizeMode={FastImage.resizeMode.contain}></FastImage>
+              <TextInput
+                style={{flex: 1, paddingStart: 10, color: '#000'}}
+                placeholder="Search Manga"
+                placeholderTextColor={AppColors.secondary_gray}
+                onChangeText={text => {
+                  setSearch(text);
+                  countDownSearch(text);
+                }}
+                value={search}></TextInput>
+            </View>
+            {handleScroll == false && (
               <Pressable
-                style={styles.avatarContainer}
+                style={styles.searchBarRight}
                 onPress={() => {
-                  navigate(routes.user);
+                  setSearch('');
+                  GetMangaByGenre(genre == 'All' ? '' : genre);
                 }}>
                 <FastImage
-                  source={require('../../Images/img_avatar.jpg')}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode={FastImage.resizeMode.cover}></FastImage>
+                  source={require('../../Images/ic_delete.png')}
+                  style={{width: 20, height: 10}}
+                  resizeMode={FastImage.resizeMode.contain}></FastImage>
               </Pressable>
-            </DropShadow>
-
-            <View style={{width: '60%', marginStart: 15}}>
-              <Text style={[Typographies.h4, {color: AppColors.primary_black}]}>
-                raiko
-              </Text>
-              <Text style={{marginTop: 4}}>Just a normal weeb!</Text>
-            </View>
+            )}
           </View>
-          <Pressable onPress={handlePresentModalPress}>
-            <FastImage
-              source={require('../../Images/ic_option.png')}
-              style={{width: 47, height: 47}}
-              resizeMode={FastImage.resizeMode.contain}></FastImage>
-          </Pressable>
-        </Pressable>
-        {/* Header End */}
+        </DropShadow>
+        {/* Search Bar End */}
         <FlatList
+          style={{paddingStart: 10}}
           data={data}
           horizontal
           renderItem={({item}) => (
@@ -215,8 +282,8 @@ const Libraryv1 = () => {
 
                 elevation: 2,
                 paddingHorizontal: 5,
-                paddingBottom: 5,
-                paddingTop: 1,
+                paddingBottom: 10,
+                paddingTop: 10,
               }}>
               <TouchableOpacity
                 onPress={() => handleFilled(item.id)}
@@ -247,11 +314,12 @@ const Libraryv1 = () => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}></FlatList>
 
-        <View>
-          {data1.map(item => (
-            <LibraryItem data={item} key={item._id}></LibraryItem>
-          ))}
-        </View>
+        <FlatList
+          style={{marginTop: 5}}
+          data={mangaData}
+          keyExtractor={item => item._id}
+          renderItem={({item}) => <LibraryItem data={item}></LibraryItem>}
+        />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={1}
@@ -281,7 +349,7 @@ const Libraryv1 = () => {
             </Pressable>
           </View>
         </BottomSheetModal>
-      </ScrollView>
+      </View>
     </BottomSheetModalProvider>
   );
 };
@@ -292,8 +360,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: AppColors.primary_white,
-    paddingStart: 23,
-    paddingEnd: 22,
+    paddingHorizontal: 10,
   },
   header: {
     flexDirection: 'row',
@@ -319,4 +386,20 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
   },
+  searchBarContainer: {
+    backgroundColor: AppColors.primary_white,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 25,
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  seachBarLeft: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+    paddingStart: 20,
+  },
+  searchBarRight: {paddingEnd: 20},
 });

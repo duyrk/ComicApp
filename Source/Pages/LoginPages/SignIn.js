@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  View,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Typographies} from '../../Constants/Typographies';
 import {AppColors} from '../../Constants/AppColors';
@@ -21,7 +14,6 @@ import Loading from '../../Components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {login} from '../../Redux/slices/authSlice';
-
 const SignIn = () => {
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
@@ -45,6 +37,10 @@ const SignIn = () => {
       Login();
     }
   };
+  useEffect(() => {
+    dispatch(login(null));
+  }, []);
+
   const Login = async () => {
     try {
       const response = await AxiosIntance().post('/user/login', {
