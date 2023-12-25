@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, StyleSheet, Button, NativeModules} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -33,6 +33,7 @@ const Test = () => {
   }, []);
   useEffect(() => {
     console.log('Date' + date);
+    NativeModules.ToastExample.show("Awesome", 0);
   }, [date]);
 
   return (
@@ -78,6 +79,7 @@ const Test = () => {
           </View>
         </BottomSheetModal>
       </View>
+
     </BottomSheetModalProvider>
   );
 };

@@ -23,7 +23,8 @@ const UserNavigation = () => {
   return (
     <NavigationContainer>
       <UserStack.Navigator
-        initialRouteName={user ? routes.home : routes.login}
+        // initialRouteName={user ? routes.home : routes.login}
+          initialRouteName={'test'}
         detachInactiveScreens={true}
         screenOptions={{
           headerShown: false,

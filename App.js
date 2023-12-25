@@ -32,8 +32,6 @@ const App = () => {
           <MenuProvider>
             <UserNavigation />
           </MenuProvider>
-
-          {/* <HomeScreen></HomeScreen> */}
           <StatusBar
             barStyle={'dark-content'}
             backgroundColor={'#FFF'}></StatusBar>
