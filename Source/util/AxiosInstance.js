@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const AxiosIntance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: 'http://192.168.1.176:3000/api/',
+    baseURL: 'https://manga-app-server.vercel.app/api/',
   });
   axiosInstance.interceptors.request.use(
     async config => {
